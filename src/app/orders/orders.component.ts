@@ -74,7 +74,7 @@ export class OrdersComponent implements OnInit {
       this.modalService.dismissAll();
       if (this.addflag) {
         this.addOrder(this.addform.value)
-      } else {
+      } else { 
         let data = {
           customername: this.f.customername.value,
           customerphone: this.f.customerphone.value,
