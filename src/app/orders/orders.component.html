@@ -1,0 +1,90 @@
+<div class="row" class="addorderdiv">
+    <button type="button" class="btn btn-success" (click)="open(content,1)">New Order</button>
+</div>
+<div class="ordertable">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Order Number</th>
+                <th scope="col">Order Due Date</th>
+                <th scope="col">Customer Buyer Name</th>
+                <th scope="col">Customer Address</th>
+                <th scope="col">Customer Phone</th>
+                <th scope="col">OrderTotal</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let order of orders; index as i">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>
+                    {{ order._id }}
+                </td>
+                <td>{{ order.order_due_date | date }}</td>
+                <td>{{ order.customer_buyer_name | uppercase }}</td>
+                <td>{{ order.customer_address | uppercase}}</td>
+                <td>{{ order.customer_phone}}</td>
+                <td>{{ order.order_total | number }}</td>
+                <td><button class="btn btn-info btn-sm" (click)="onEdit(order)" (click)="open(content,2)">EDIT</button>
+                    <button class="btn btn-danger btn-sm" (click)="onDelete(order._id)">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{modeltitle}} Order</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="addform" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="customername">Customer Name</label>
+                <input type="text" formControlName="customername" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.customername.errors }" />
+                <div *ngIf="submitted && f.customername.errors" class="invalid-feedback">
+                    <div *ngIf="f.customername.errors.required">Customer Name is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="customerphone">Customer Phone</label>
+                <input type="number" formControlName="customerphone" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.customerphone.errors }" />
+                <div *ngIf="submitted && f.customerphone.errors" class="invalid-feedback">
+                    <div *ngIf="f.customerphone.errors.required">Customer Phone is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="customeraddress">Customer Address</label>
+                <input type="text" formControlName="customeraddress" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.customeraddress.errors }" />
+                <div *ngIf="submitted && f.customeraddress.errors" class="invalid-feedback">
+                    <div *ngIf="f.customeraddress.errors.required">Customer Address is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="date">Date</label>
+                <div class="input-group">
+                    <input id="date" formControlName="date" class="form-control" placeholder="yyyy-mm-dd" name="dp"
+                        ngbDatepicker #dp="ngbDatepicker" [ngClass]="{ 'is-invalid': submitted && f.date.errors }">
+                    <div *ngIf="submitted && f.date.errors" class="invalid-feedback">
+                        <div *ngIf="f.date.errors.required">Date is required</div>
+                    </div>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ordertotal">Order Total</label>
+                <input type="number" formControlName="ordertotal" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ordertotal.errors }" />
+                <div *ngIf="submitted && f.ordertotal.errors" class="invalid-feedback">
+                    <div *ngIf="f.ordertotal.errors.required">Order Total is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-outline-dark" style="float:right;">Save</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
